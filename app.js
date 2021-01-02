@@ -30,21 +30,21 @@ rl.on('line', lineString => {   //line イベント発生時に以下を発動
     }
     if (year === 2015) {
       value.pop15 = pop_num;
-    }    
+    }
     prefdata_map.set(pref, value);
   }
 });
 
 rl.on('close', () => {
-  for(let [key,value] of prefdata_map){
-    value.change=value.pop15/value.pop10;
+  for (let [key, value] of prefdata_map) {
+    value.change = value.pop15 / value.pop10;
   }
-  const ranking_array=Array.from(prefdata_map).sort((pair1,pair2)=>{ // 2つの引数の大小でsort
-    return pair2[1].change-pair1[1].change;
+  const ranking_array = Array.from(prefdata_map).sort((pair1, pair2) => { // 2つの引数の大小でsort
+    return -pair2[1].change + pair1[1].change;
   })
-  // 以下は単なる配列の整形だが、ここでmap関数を利用
-  const ranking_strings = ranking_array.map(([key,value])=>{
-    return (key +':'+value.pop10+'=>'+value.pop15+'変化:'+value.change);
+  // 以下は単なる配列の整形だが、ここでmap関数（Mapの各要素に作用）を利用
+  const ranking_strings = ranking_array.map(([key, value],i) => {
+    return (' 第'+(i+1)+'位' + key + ':' + value.pop10 + '=>' + value.pop15 + '変化:' + value.change);
   });
-  console.log(ranking_array);
+  console.log(ranking_strings);
 });
